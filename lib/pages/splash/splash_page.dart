@@ -21,6 +21,12 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   @override
+  void dispose() {
+    Get.delete<SplashController>();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SizedBox.expand(
@@ -37,7 +43,7 @@ class _SplashPageState extends State<SplashPage> {
             ),
           ),
           child: const BoldText(
-            text: "Welcome to, Self",
+            text: "Selamat datang di Self!",
             fontWeight: FontWeight.bold,
             color: AppColor.white,
             fontSize: 24,

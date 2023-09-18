@@ -1,5 +1,6 @@
 import 'package:get/route_manager.dart';
 
+import '../pages/landing/landing_page.dart';
 import '../pages/regist/regist_page.dart';
 import '../pages/splash/splash_page.dart';
 
@@ -11,6 +12,11 @@ class AppRoute {
       transition: Transition.rightToLeft,
     ),
     GetPage(
+      name: landing,
+      page: () => const LandingPage(),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
       name: regist,
       page: () => const RegistPage(),
       transition: Transition.rightToLeft,
@@ -18,5 +24,6 @@ class AppRoute {
   ];
 
   static String splash = "/splash";
+  static String landing = "/landing";
   static String regist = "/regist";
 }
