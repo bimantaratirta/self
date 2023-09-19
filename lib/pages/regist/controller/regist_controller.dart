@@ -1,12 +1,16 @@
-import 'dart:developer';
+import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/route_manager.dart';
+import 'package:path_provider/path_provider.dart';
 
+import '../../../constants/app_routes.dart';
 import '../../../services/sql_service.dart';
+import '../../../services/xml_service.dart';
 import '../../../shareds/state/button_state.dart';
+import '../../../utils/permission_manager.dart';
 import '../widget/regist_image_dialog.dart';
 
 class RegistController extends GetxController {
@@ -15,11 +19,13 @@ class RegistController extends GetxController {
   Rx<String?> name = Rx<String?>(null);
 
   Future<void> pickImage() async {
-    final path = await FilePicker.platform.pickFiles(allowMultiple: false);
-    if (path != null) {
-      image.value = path.files.single.path!;
-      if (name.value != null) buttonState.value = ButtonState.enable;
-    }
+    PermissionManager.checkStoragePermission(() async {
+      final path = await FilePicker.platform.pickFiles(allowMultiple: false);
+      if (path != null) {
+        image.value = path.files.single.path!;
+        if (name.value != null) buttonState.value = ButtonState.enable;
+      }
+    });
   }
 
   void onChangePicture() async {
@@ -36,20 +42,31 @@ class RegistController extends GetxController {
   }
 
   void onNext() async {
+    buttonState.value = ButtonState.loading;
+    final savedImage = await saveImage();
+    await FilePicker.platform.clearTemporaryFiles();
     final Map<String, Object> value = {
       "name": name.value!,
-      "image": image.value!,
+      "image": savedImage.path,
     };
-    final id = await sqlService.insert<int>(SQLParam(
-      table: SQLTables.user,
+    final response = await sqlService.insert(SQLParam(
+      table: SQLTable.user,
+      fromJson: (_) {},
       value: value,
-      fromJson: (List<Map<String, Object?>> _) {},
     ));
-
-    log(id.toString());
+    final prefs = {"user_id": response.data, "is_registered": true};
+    XMLService.writePrefs(prefs);
+    buttonState.value = ButtonState.enable;
+    Get.offAllNamed(AppRoute.navigation, arguments: response.data);
   }
 
-  void saveImage() {
-    // File file = File
+  Future<File> saveImage() async {
+    final fileName = image.value!.split("/").last;
+    final newDir = await getApplicationDocumentsDirectory();
+    final newPath = "${newDir.path}/$fileName";
+    final savedImage = File(newPath);
+    return savedImage.existsSync()
+        ? savedImage
+        : (await File(image.value!).copy(newPath));
   }
 }

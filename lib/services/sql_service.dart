@@ -1,9 +1,9 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-class SQLTables {
+class SQLTable {
   static const String user = "User";
-  static const String transactions = "Transaction";
+  static const String transactions = "Transactions";
 }
 
 class SQLParam<T> {
@@ -41,25 +41,27 @@ class SQLService {
       onCreate: (Database db, int version) async {
         await db.execute(
           """
-          CREATE TABLE ${SQLTables.user}(
+          CREATE TABLE ${SQLTable.user}(
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           image TEXT,
           name TEXT,
           balance REAL,
           income REAL,
-          expense REAL,
+          expense REAL
           )
           """,
         );
         await db.execute(
           """
-          CREATE TABLE ${SQLTables.transactions}(
+          CREATE TABLE ${SQLTable.transactions}(
           id INTEGER PRIMARY KEY AUTOINCREMENT,
+          user_id INTEGER,
           image TEXT,
           name TEXT,
           status TEXT,
           amount REAL,
           date TEXT,
+          FOREIGN KEY (user_id) REFERENCES ${SQLTable.user}(id)
           )
           """,
         );

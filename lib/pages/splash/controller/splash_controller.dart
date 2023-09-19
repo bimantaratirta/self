@@ -7,7 +7,9 @@ import '../../../services/xml_service.dart';
 class SplashController extends GetxController {
   void check() async {
     await Future.delayed(const Duration(seconds: 2));
-    final isRegistered = (await XMLService.readPref('isRegistered')) as bool;
-    Get.offNamed(isRegistered ? AppRoute.landing : AppRoute.landing);
+    final isRegistered = (await XMLService.readPref('is_registered')) as bool?;
+    Get.offNamed(
+      isRegistered ?? false ? AppRoute.navigation : AppRoute.landing,
+    );
   }
 }

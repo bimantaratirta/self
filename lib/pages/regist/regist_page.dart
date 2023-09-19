@@ -6,9 +6,10 @@ import 'package:get/state_manager.dart';
 
 import '../../constants/app_colors.dart';
 import '../../constants/custom_gap.dart';
-import '../../constants/custom_size.dart';
 import '../../shareds/widget/custom_button.dart';
 import '../../shareds/widget/custom_text_field.dart';
+import '../../shareds/widget/default_background.dart';
+import '../../shareds/widget/default_card.dart';
 import 'controller/regist_controller.dart';
 
 class RegistPage extends StatefulWidget {
@@ -26,43 +27,14 @@ class _RegistPageState extends State<RegistPage> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return Scaffold(
-      body: Container(
-        width: size.width,
-        height: size.height,
-        padding: const EdgeInsets.all(CSize.m),
-        constraints: const BoxConstraints(),
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            alignment: Alignment.topCenter,
-            image: AssetImage('assets/background/scaffold-bg.png'),
-            fit: BoxFit.fitWidth,
-          ),
-        ),
+      body: DefaultBackground(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Container(
-              width: size.width,
-              constraints: const BoxConstraints(),
-              padding: const EdgeInsets.all(CSize.reg),
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(CSize.reg),
-                ),
-                color: AppColor.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColor.black.withOpacity(.25),
-                    offset: const Offset(1.0, 5.0),
-                    blurRadius: 10.0,
-                    spreadRadius: 1.0,
-                  ),
-                ],
-              ),
+            DefaultCard(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [

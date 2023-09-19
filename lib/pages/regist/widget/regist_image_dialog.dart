@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:get/instance_manager.dart';
+import 'package:get/state_manager.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../../constants/custom_gap.dart';
@@ -16,7 +17,6 @@ class RegistImageDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<RegistController>();
-    final imagePath = controller.image.value;
     return Dialog(
       child: Container(
         padding: const EdgeInsets.all(CSize.reg),
@@ -32,7 +32,13 @@ class RegistImageDialog extends StatelessWidget {
                 borderRadius: BorderRadius.all(Radius.circular(CSize.s)),
               ),
               clipBehavior: Clip.antiAliasWithSaveLayer,
-              child: Image.file(File(imagePath!)),
+              child: Obx(() {
+                final imagePath = controller.image.value;
+                return Image.file(
+                  File(imagePath!),
+                  fit: BoxFit.fitWidth,
+                );
+              }),
             ),
             VertGap.reg,
             Row(

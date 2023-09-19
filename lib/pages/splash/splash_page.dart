@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 
 import '../../constants/app_colors.dart';
+import '../../constants/app_info.dart';
+import '../../constants/custom_size.dart';
 import '../../shareds/widget/bold_text.dart';
 import 'controller/splash_controller.dart';
 
@@ -28,26 +30,39 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    final size = MediaQuery.of(context).size;
     return Scaffold(
-      body: SizedBox.expand(
-        child: Container(
-          alignment: Alignment.center,
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                AppColor.primaryLight,
-                AppColor.primaryDark,
-              ],
+      body: Container(
+        width: size.width,
+        height: size.height,
+        padding: const EdgeInsets.all(CSize.m),
+        alignment: Alignment.center,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              AppColor.primaryLight,
+              AppColor.primaryDark,
+            ],
+          ),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const SizedBox.shrink(),
+            const BoldText(
+              text: "Selamat datang di Self!",
+              fontWeight: FontWeight.bold,
+              color: AppColor.white,
+              fontSize: 24,
             ),
-          ),
-          child: const BoldText(
-            text: "Selamat datang di Self!",
-            fontWeight: FontWeight.bold,
-            color: AppColor.white,
-            fontSize: 24,
-          ),
+            Text(
+              AppInfo.version,
+              style: textTheme.labelMedium?.copyWith(color: AppColor.white),
+            )
+          ],
         ),
       ),
     );
