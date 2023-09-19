@@ -16,7 +16,7 @@ class DefaultBackground extends StatelessWidget {
     return Container(
       width: size.width,
       height: size.height,
-      padding: const EdgeInsets.all(CSize.m),
+      padding: const EdgeInsets.symmetric(horizontal: CSize.m),
       constraints: const BoxConstraints(),
       decoration: const BoxDecoration(
         image: DecorationImage(
