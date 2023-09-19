@@ -6,9 +6,11 @@ class DefaultBackground extends StatelessWidget {
   const DefaultBackground({
     super.key,
     required this.child,
+    this.padding = const EdgeInsets.symmetric(horizontal: CSize.m),
   });
 
   final Widget child;
+  final EdgeInsetsGeometry padding;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +18,7 @@ class DefaultBackground extends StatelessWidget {
     return Container(
       width: size.width,
       height: size.height,
-      padding: const EdgeInsets.symmetric(horizontal: CSize.m),
+      padding: padding,
       constraints: const BoxConstraints(),
       decoration: const BoxDecoration(
         image: DecorationImage(
