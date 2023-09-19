@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/state_manager.dart';
 
-import '../../constants/app_colors.dart';
 import 'widget/navigation_bottom_navbar.dart';
 import 'controller/navigation_controller.dart';
+import 'widget/navigation_fab.dart';
 
 class NavigationPage extends StatefulWidget {
   const NavigationPage({super.key});
@@ -37,17 +37,7 @@ class _NavigationPageState extends State<NavigationPage> {
           controller: _controller,
           idx: idx,
         ),
-        floatingActionButton: idx == 0
-            ? FloatingActionButton(
-                shape: const CircleBorder(),
-                onPressed: () {},
-                child: const Icon(
-                  Icons.add_rounded,
-                  color: AppColor.white,
-                  size: 32,
-                ),
-              )
-            : null,
+        floatingActionButton: idx == 0 ? const NavigationFAB() : null,
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       );
     });
