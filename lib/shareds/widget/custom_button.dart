@@ -94,7 +94,7 @@ class CButton extends StatelessWidget {
           color: state == ButtonState.enable
               ? borderColor
               : borderColor.withOpacity(.5),
-          width: borderWidth ?? 2.0,
+          width: borderWidth ?? 1.0,
         ),
         foregroundColor: foregroundColor,
         backgroundColor: Colors.transparent,
