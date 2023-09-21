@@ -4,6 +4,7 @@ import '../../../constants/app_colors.dart';
 import '../../../constants/custom_gap.dart';
 import '../../../constants/custom_size.dart';
 import '../../../shareds/widget/bold_text.dart';
+import '../../../shareds/widget/custom_divider.dart';
 import '../../../utils/format_currency.dart';
 
 class DetailTransactionContent extends StatelessWidget {
@@ -15,7 +16,7 @@ class DetailTransactionContent extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     return Container(
       width: size.width,
-      padding: const EdgeInsets.symmetric(horizontal: CSize.reg),
+      padding: const EdgeInsets.symmetric(horizontal: CSize.m),
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(CSize.l),
@@ -51,7 +52,7 @@ class DetailTransactionContent extends StatelessWidget {
               borderRadius: const BorderRadius.all(Radius.circular(CSize.m)),
             ),
             child: Text(
-              "Pemasukan",
+              "Pengeluaran",
               style: textTheme.bodySmall?.copyWith(
                 color: AppColor.red,
                 fontWeight: FontWeight.w600,
@@ -66,6 +67,71 @@ class DetailTransactionContent extends StatelessWidget {
             fontSize: 24,
             overflow: TextOverflow.ellipsis,
           ),
+          VertGap.m,
+          const TransactionContentItem(
+            color: AppColor.red,
+            title: 'Tipe',
+            content: 'Pengeluaran',
+          ),
+          const TransactionContentItem(title: 'Untuk', content: 'Beli Seblack'),
+          const TransactionContentItem(title: 'Waktu', content: '16:30'),
+          const TransactionContentItem(
+            title: 'Tanggal',
+            content: '29 Agustus 2023',
+          ),
+          const CDivider(height: CSize.m, thickness: 2),
+          TransactionContentItem(
+            title: 'Pengeluaran',
+            content: 'Rp${formatCurrency(20000)}',
+          ),
+          TransactionContentItem(
+            title: 'Biaya lainnya',
+            content: 'Rp${formatCurrency(1500)}',
+          ),
+          const CDivider(height: CSize.m, thickness: 2),
+          TransactionContentItem(
+            title: 'Total',
+            content: 'Rp${formatCurrency(21500)}',
+            fontWeight: FontWeight.bold,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class TransactionContentItem extends StatelessWidget {
+  const TransactionContentItem({
+    super.key,
+    this.color,
+    required this.title,
+    required this.content,
+    this.fontWeight,
+  });
+
+  final String title;
+  final String content;
+  final FontWeight? fontWeight;
+  final Color? color;
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: CSize.s),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            title,
+            style: textTheme.bodyMedium?.copyWith(color: AppColor.grey),
+          ),
+          Text(
+            content,
+            style: textTheme.bodyMedium?.copyWith(
+                color: color ?? AppColor.black, fontWeight: fontWeight),
+          )
         ],
       ),
     );

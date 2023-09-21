@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/instance_manager.dart';
 import 'package:get/route_manager.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../../constants/custom_size.dart';
+import '../controller/detail_transaction_controller.dart';
 
 class DetailTransactionAppBar extends StatelessWidget {
   const DetailTransactionAppBar({super.key});
@@ -10,6 +12,7 @@ class DetailTransactionAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final controller = Get.find<DetailTransactionController>();
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: CSize.m),
       child: Row(
@@ -29,8 +32,26 @@ class DetailTransactionAppBar extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          GestureDetector(
-            onTap: () => debugPrint("MENU"),
+          PopupMenuButton(
+            onSelected: controller.onMenuSelected,
+            itemBuilder: (ctx) {
+              return [
+                PopupMenuItem(
+                  value: "Edit",
+                  child: Text(
+                    "Edit",
+                    style: textTheme.bodyMedium,
+                  ),
+                ),
+                PopupMenuItem(
+                  value: "Hapus",
+                  child: Text(
+                    "Hapus",
+                    style: textTheme.bodyMedium,
+                  ),
+                ),
+              ];
+            },
             child: const Icon(
               Icons.more_horiz_rounded,
               color: AppColor.white,
