@@ -1,5 +1,6 @@
 import 'package:get/route_manager.dart';
 
+import '../pages/add_transaction/add_transaction_page.dart';
 import '../pages/detail_transaction/detail_transaction_page.dart';
 import '../pages/landing/landing_page.dart';
 import '../pages/navigation/navigation_page.dart';
@@ -38,6 +39,11 @@ class AppRoute {
       name: detailTransaction,
       page: () => const DetailTransactionPage(),
       transition: Transition.downToUp,
+    ),
+    GetPage(
+      name: addTransaction,
+      page: () => const AddTransactionPage(),
+      transition: Transition.downToUp,
     )
   ];
 
@@ -47,4 +53,5 @@ class AppRoute {
   static String storagePermission = "/storage-permission";
   static String navigation = "/navigation";
   static String detailTransaction = "/detail-transaction";
+  static String addTransaction = "/add-transaction";
 }

@@ -46,6 +46,7 @@ dependencies:
   permission_handler: ^11.0.0
   device_info_plus: ^9.0.3
   path_provider: ^2.1.1
+  flutter_launcher_icons: ^0.13.1
 
 dev_dependencies:
   flutter_test:
@@ -100,3 +101,15 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path_android: "assets/icons/logo_impuls_teal.png"
+  image_path_ios: "assets/icons/logo_impuls_teal.png"
+  min_sdk_android: 19
+  adaptive_icon_background: "assets/icons/logo-impuls-background.png"
+  adaptive_icon_foreground: "assets/icons/logo-impuls-foreground.png"
+  adaptive_icon_monochrome: "assets/icons/logo-impuls-foreground.png"
+  # background_color: "linear-gradient(-45deg, rgba(125,193,68,1) 0%, rgba(12,107,135,1) 100%);"

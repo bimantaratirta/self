@@ -46,8 +46,6 @@ class SQLService {
           image TEXT,
           name TEXT,
           balance REAL,
-          income REAL,
-          expense REAL
           )
           """,
         );
