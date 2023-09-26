@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 
 import '../../../constants/app_colors.dart';
+import '../../../constants/app_routes.dart';
 import '../../../constants/custom_gap.dart';
 import '../../../models/model_transaction.dart';
 import 'index_transactions_card.dart';
@@ -73,7 +75,7 @@ class IndexTransactions extends StatelessWidget {
                 ),
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () => Get.toNamed(AppRoute.allTransaction),
                 child: const Text(
                   "Semua",
                   style: TextStyle(color: AppColor.grey),

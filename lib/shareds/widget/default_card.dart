@@ -4,9 +4,10 @@ import '../../constants/app_colors.dart';
 import '../../constants/custom_size.dart';
 
 class DefaultCard extends StatelessWidget {
-  const DefaultCard({super.key, required this.child});
+  const DefaultCard({super.key, required this.child, this.padding});
 
   final Widget child;
+  final EdgeInsetsGeometry? padding;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class DefaultCard extends StatelessWidget {
     return Container(
       width: size.width,
       constraints: const BoxConstraints(),
-      padding: const EdgeInsets.all(CSize.reg),
+      padding: padding ?? const EdgeInsets.all(CSize.reg),
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(
           Radius.circular(CSize.reg),

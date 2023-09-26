@@ -1,6 +1,7 @@
 import 'package:get/route_manager.dart';
 
 import '../pages/add_transaction/add_transaction_page.dart';
+import '../pages/all_transactions/all_transactions_page.dart';
 import '../pages/detail_transaction/detail_transaction_page.dart';
 import '../pages/landing/landing_page.dart';
 import '../pages/navigation/navigation_page.dart';
@@ -44,7 +45,12 @@ class AppRoute {
       name: addTransaction,
       page: () => const AddTransactionPage(),
       transition: Transition.downToUp,
-    )
+    ),
+    GetPage(
+      name: allTransaction,
+      page: () => const AllTransactionsPage(),
+      transition: Transition.downToUp,
+    ),
   ];
 
   static String splash = "/splash";
@@ -54,4 +60,5 @@ class AppRoute {
   static String navigation = "/navigation";
   static String detailTransaction = "/detail-transaction";
   static String addTransaction = "/add-transaction";
+  static String allTransaction = "/all-transaction";
 }
