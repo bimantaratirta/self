@@ -59,6 +59,7 @@ class SQLService {
           status TEXT,
           amount REAL,
           date TEXT,
+          time TEXT,
           FOREIGN KEY (user_id) REFERENCES ${SQLTable.user}(id)
           )
           """,
