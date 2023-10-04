@@ -6,6 +6,8 @@ import '../../constants/app_colors.dart';
 import '../../constants/custom_gap.dart';
 import '../../constants/custom_size.dart';
 import 'controller/statistic_controller.dart';
+import 'widget/statistic_period_card.dart';
+import 'widget/statistic_type_card.dart';
 
 class StatisticPage extends StatefulWidget {
   const StatisticPage({super.key});
@@ -17,14 +19,30 @@ class StatisticPage extends StatefulWidget {
 class _StatisticPageState extends State<StatisticPage> {
   final controller = Get.put<StatisticController>(StatisticController());
 
+  String type = "Pemasukan";
+  String period = "Hari";
+
   @override
   void dispose() {
     Get.delete<StatisticController>();
     super.dispose();
   }
 
+  void onPeriodChange(String period) {
+    setState(() {
+      this.period = period;
+    });
+  }
+
+  void onTypeChange(String type) {
+    setState(() {
+      this.type = type;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Statistic"),
@@ -32,246 +50,198 @@ class _StatisticPageState extends State<StatisticPage> {
         backgroundColor: AppColor.white,
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: CSize.m),
+            child: Row(
+              children: [
+                StatisticTypeCard(
+                  type: type,
+                  title: 'Pemasukan',
+                  onTypeChange: onTypeChange,
+                ),
+                HorzGap.s,
+                StatisticTypeCard(
+                  type: type,
+                  title: 'Pengeluaran',
+                  onTypeChange: onTypeChange,
+                ),
+              ],
+            ),
+          ),
+          VertGap.s,
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
               children: [
                 HorzGap.m,
-                Container(
-                  decoration: const BoxDecoration(
-                    color: AppColor.primaryLight,
-                    borderRadius: BorderRadius.all(Radius.circular(CSize.xs)),
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: CSize.m,
-                    vertical: CSize.s,
-                  ),
-                  child: const Text(
-                    "12 Jam",
-                    style: TextStyle(color: AppColor.white),
-                  ),
+                StatisticPeriodCard(
+                  period: period,
+                  title: 'Hari',
+                  onPeriodChange: onPeriodChange,
                 ),
                 HorzGap.s,
-                Container(
-                  decoration: const BoxDecoration(
-                    color: AppColor.primaryLight,
-                    borderRadius: BorderRadius.all(Radius.circular(CSize.xs)),
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: CSize.m,
-                    vertical: CSize.s,
-                  ),
-                  child: const Text(
-                    "Hari",
-                    style: TextStyle(color: AppColor.white),
-                  ),
+                StatisticPeriodCard(
+                  period: period,
+                  title: 'Minggu',
+                  onPeriodChange: onPeriodChange,
                 ),
                 HorzGap.s,
-                Container(
-                  decoration: const BoxDecoration(
-                    color: AppColor.primaryLight,
-                    borderRadius: BorderRadius.all(Radius.circular(CSize.xs)),
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: CSize.m,
-                    vertical: CSize.s,
-                  ),
-                  child: const Text(
-                    "Minggu",
-                    style: TextStyle(color: AppColor.white),
-                  ),
+                StatisticPeriodCard(
+                  period: period,
+                  title: 'Bulan',
+                  onPeriodChange: onPeriodChange,
                 ),
                 HorzGap.s,
-                Container(
-                  decoration: const BoxDecoration(
-                    color: AppColor.primaryLight,
-                    borderRadius: BorderRadius.all(Radius.circular(CSize.xs)),
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: CSize.m,
-                    vertical: CSize.s,
-                  ),
-                  child: const Text(
-                    "Bulan",
-                    style: TextStyle(color: AppColor.white),
-                  ),
-                ),
-                HorzGap.s,
-                Container(
-                  decoration: const BoxDecoration(
-                    color: AppColor.primaryLight,
-                    borderRadius: BorderRadius.all(Radius.circular(CSize.xs)),
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: CSize.m,
-                    vertical: CSize.s,
-                  ),
-                  child: const Text(
-                    "Tahun",
-                    style: TextStyle(color: AppColor.white),
-                  ),
+                StatisticPeriodCard(
+                  period: period,
+                  title: 'Tahun',
+                  onPeriodChange: onPeriodChange,
                 ),
                 HorzGap.m,
               ],
             ),
           ),
-          Expanded(
-            child: LineChart(
-              LineChartData(
-                lineTouchData: LineTouchData(
-                  handleBuiltInTouches: true,
-                  touchTooltipData: LineTouchTooltipData(
-                    tooltipBgColor: Colors.blueGrey.withOpacity(0.8),
-                  ),
-                ),
-                gridData: const FlGridData(show: false),
-                titlesData: FlTitlesData(
-                  bottomTitles: AxisTitles(
-                    sideTitles: SideTitles(
-                      showTitles: true,
-                      reservedSize: 32,
-                      interval: 1,
-                      getTitlesWidget: (value, meta) {
-                        const style = TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        );
-                        Widget text;
-                        switch (value.toInt()) {
-                          case 2:
-                            text = const Text('SEPT', style: style);
-                            break;
-                          case 7:
-                            text = const Text('OCT', style: style);
-                            break;
-                          case 12:
-                            text = const Text('DEC', style: style);
-                            break;
-                          default:
-                            text = const Text('');
-                            break;
-                        }
-
-                        return SideTitleWidget(
-                          axisSide: meta.axisSide,
-                          space: 10,
-                          child: text,
-                        );
-                      },
+          VertGap.m,
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Container(
+              height: size.height / 3,
+              width: size.width > 600 ? size.width : size.width * 1.5,
+              margin: const EdgeInsets.only(right: CSize.m),
+              child: LineChart(
+                LineChartData(
+                  lineTouchData: LineTouchData(
+                    handleBuiltInTouches: true,
+                    touchTooltipData: LineTouchTooltipData(
+                      tooltipBgColor: AppColor.primary10.withOpacity(.75),
+                      tooltipBorder: BorderSide(
+                        width: .5,
+                        color: AppColor.primaryLight.withOpacity(.5),
+                      ),
+                      tooltipRoundedRadius: CSize.s,
                     ),
                   ),
-                  rightTitles: const AxisTitles(
-                    sideTitles: SideTitles(showTitles: false),
-                  ),
-                  topTitles: const AxisTitles(
-                    sideTitles: SideTitles(showTitles: false),
-                  ),
-                  leftTitles: AxisTitles(
-                    sideTitles: SideTitles(
-                      getTitlesWidget: (value, meta) {
-                        const style = TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                        );
-                        String text;
-                        switch (value.toInt()) {
-                          case 1:
-                            text = '1m';
-                            break;
-                          case 2:
-                            text = '2m';
-                            break;
-                          case 3:
-                            text = '3m';
-                            break;
-                          case 4:
-                            text = '5m';
-                            break;
-                          case 5:
-                            text = '6m';
-                            break;
-                          default:
-                            return Container();
-                        }
-
-                        return Text(text,
-                            style: style, textAlign: TextAlign.center);
-                      },
-                      showTitles: true,
-                      interval: 1,
-                      reservedSize: 40,
+                  gridData: const FlGridData(show: false),
+                  titlesData: FlTitlesData(
+                    bottomTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        reservedSize: 30,
+                        interval: 1,
+                        getTitlesWidget: (value, meta) {
+                          String text;
+                          switch (value.toInt()) {
+                            case 1:
+                              text = 'Jan';
+                              break;
+                            case 2:
+                              text = 'Feb';
+                              break;
+                            case 3:
+                              text = 'Mar';
+                              break;
+                            case 4:
+                              text = 'Apr';
+                              break;
+                            case 5:
+                              text = 'Mei';
+                              break;
+                            case 6:
+                              text = 'Jun';
+                              break;
+                            case 7:
+                              text = 'Jul';
+                              break;
+                            case 8:
+                              text = 'Ags';
+                              break;
+                            case 9:
+                              text = 'Sep';
+                              break;
+                            case 10:
+                              text = 'Okt';
+                              break;
+                            case 11:
+                              text = 'Nov';
+                              break;
+                            case 12:
+                              text = 'Des';
+                              break;
+                            default:
+                              text = '';
+                              break;
+                          }
+                          return SideTitleWidget(
+                            axisSide: meta.axisSide,
+                            space: CSize.s,
+                            child: Text(text),
+                          );
+                        },
+                      ),
+                    ),
+                    leftTitles: const AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: false,
+                        reservedSize: 0,
+                      ),
+                    ),
+                    rightTitles: const AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: false,
+                        reservedSize: 0,
+                      ),
+                    ),
+                    topTitles: const AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: false,
+                        reservedSize: 0,
+                      ),
                     ),
                   ),
-                ),
-                borderData: FlBorderData(
-                  show: true,
-                  border: Border(
-                    bottom: BorderSide(
-                        color: AppColor.primaryLight.withOpacity(0.2),
-                        width: 4),
-                    left: const BorderSide(color: Colors.transparent),
-                    right: const BorderSide(color: Colors.transparent),
-                    top: const BorderSide(color: Colors.transparent),
-                  ),
-                ),
-                lineBarsData: [
-                  LineChartBarData(
-                    isCurved: true,
-                    color: AppColor.green,
-                    barWidth: 8,
-                    isStrokeCapRound: true,
-                    dotData: const FlDotData(show: false),
-                    belowBarData: BarAreaData(show: false),
-                    spots: const [
-                      FlSpot(1, 1),
-                      FlSpot(3, 1.5),
-                      FlSpot(5, 1.4),
-                      FlSpot(7, 3.4),
-                      FlSpot(10, 2),
-                      FlSpot(12, 2.2),
-                      FlSpot(13, 1.8),
-                    ],
-                  ),
-                  LineChartBarData(
-                    isCurved: true,
-                    color: Colors.pink,
-                    barWidth: 8,
-                    isStrokeCapRound: true,
-                    dotData: const FlDotData(show: false),
-                    belowBarData: BarAreaData(
-                      show: false,
-                      color: Colors.pink.withOpacity(0),
+                  borderData: FlBorderData(show: false),
+                  lineBarsData: [
+                    LineChartBarData(
+                      isCurved: true,
+                      color: AppColor.primaryLight,
+                      barWidth: 2,
+                      isStrokeCapRound: true,
+                      dotData: const FlDotData(show: false),
+                      belowBarData: BarAreaData(
+                        show: true,
+                        color: AppColor.primaryLight,
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            AppColor.primaryLight.withAlpha(100),
+                            AppColor.primary10,
+                            AppColor.white,
+                          ],
+                        ),
+                      ),
+                      spots: const [
+                        FlSpot(1, 10000),
+                        FlSpot(2, 20000),
+                        FlSpot(3, 15000),
+                        FlSpot(4, 50000),
+                        FlSpot(5, 100000),
+                        FlSpot(6, 26370),
+                        FlSpot(7, 65728),
+                        FlSpot(8, 81246),
+                        FlSpot(9, 92472),
+                        FlSpot(10, 25777),
+                        FlSpot(11, 78999),
+                        FlSpot(12, 50000),
+                      ],
                     ),
-                    spots: const [
-                      FlSpot(1, 1),
-                      FlSpot(3, 2.8),
-                      FlSpot(7, 1.2),
-                      FlSpot(10, 2.8),
-                      FlSpot(12, 2.6),
-                      FlSpot(13, 3.9),
-                    ],
-                  ),
-                  LineChartBarData(
-                    isCurved: true,
-                    color: Colors.cyan,
-                    barWidth: 8,
-                    isStrokeCapRound: true,
-                    dotData: const FlDotData(show: false),
-                    belowBarData: BarAreaData(show: false),
-                    spots: const [
-                      FlSpot(1, 2.8),
-                      FlSpot(3, 1.9),
-                      FlSpot(6, 3),
-                      FlSpot(10, 1.3),
-                      FlSpot(13, 2.5),
-                    ],
-                  ),
-                ],
-                minX: 0,
-                maxX: 14,
-                maxY: 4,
-                minY: 0,
+                  ],
+                  minX: 0,
+                  maxX: 12,
+                  maxY: 100000,
+                  minY: 0,
+                ),
               ),
             ),
           )
