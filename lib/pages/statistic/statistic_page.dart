@@ -150,7 +150,7 @@ class _StatisticListTransactionsState extends State<StatisticListTransactions> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 BoldText(
-                  text: "Pengeluaran $sort",
+                  text: "${widget.type} $sort",
                   fontWeight: FontWeight.w600,
                   fontSize: 18,
                   color: AppColor.black,

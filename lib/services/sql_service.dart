@@ -45,7 +45,7 @@ class SQLService {
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           image TEXT,
           name TEXT,
-          balance REAL,
+          balance REAL
           )
           """,
         );
