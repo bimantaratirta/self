@@ -1,29 +1,21 @@
-import 'dart:typed_data';
-
 class User {
   int? id;
-  Uint8List? image;
+  String? image;
   String? name;
-  double? balance;
-  double? income;
-  double? expense;
+  int? balance;
 
   User({
     this.id,
     this.image,
     this.name,
     this.balance,
-    this.income,
-    this.expense,
   });
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    image = Uint8List.fromList(json['image']);
+    image = json['image'];
     name = json['name'];
     balance = json['balance'];
-    income = json['income'];
-    expense = json['expense'];
   }
 
   Map<String, dynamic> toJson() {
@@ -32,8 +24,6 @@ class User {
     data['image'] = image;
     data['name'] = name;
     data['balance'] = balance;
-    data['income'] = income;
-    data['expense'] = expense;
     return data;
   }
 }

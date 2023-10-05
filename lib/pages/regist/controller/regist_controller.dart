@@ -7,8 +7,8 @@ import 'package:get/route_manager.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../../constants/app_routes.dart';
-import '../../../services/sql_service.dart';
-import '../../../services/xml_service.dart';
+import '../../../services/sql/sql_service.dart';
+import '../../../services/xml/xml_service.dart';
 import '../../../shareds/state/button_state.dart';
 import '../../../utils/permission_manager.dart';
 import '../widget/regist_image_dialog.dart';
@@ -48,6 +48,7 @@ class RegistController extends GetxController {
     final Map<String, Object> value = {
       "name": name.value!,
       "image": savedImage.path,
+      "balance": 0.0,
     };
     final response = await sqlService.insert(SQLParam(
       table: SQLTable.user,

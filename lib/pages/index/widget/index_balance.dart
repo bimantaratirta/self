@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/instance_manager.dart';
+import 'package:get/state_manager.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../../constants/custom_gap.dart';
 import '../../../constants/custom_size.dart';
 import '../../../shareds/widget/bold_text.dart';
 import '../../../utils/format_currency.dart';
+import '../controller/index_controller.dart';
 
 class IndexBalance extends StatelessWidget {
   const IndexBalance({super.key});
@@ -12,6 +15,7 @@ class IndexBalance extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final controller = Get.find<IndexController>();
     return Container(
       padding: const EdgeInsets.all(CSize.reg),
       decoration: BoxDecoration(
@@ -38,12 +42,15 @@ class IndexBalance extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          BoldText(
-            text: "Rp${formatCurrency(8996325862385623356)}",
-            fontWeight: FontWeight.bold,
-            color: AppColor.white,
-            fontSize: CSize.m,
-          ),
+          Obx(() {
+            final balance = controller.balance.value;
+            return BoldText(
+              text: "Rp${formatCurrency(balance)}",
+              fontWeight: FontWeight.bold,
+              color: AppColor.white,
+              fontSize: CSize.m,
+            );
+          }),
           VertGap.reg,
           Text(
             "Bulan ini",
@@ -83,13 +90,16 @@ class IndexBalance extends StatelessWidget {
                       ],
                     ),
                     VertGap.xs,
-                    BoldText(
-                      text: "Rp${formatCurrency(12831283681263)}",
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18,
-                      color: AppColor.white,
-                      overflow: TextOverflow.ellipsis,
-                    )
+                    Obx(() {
+                      final income = controller.income.value;
+                      return BoldText(
+                        text: "Rp${formatCurrency(income)}",
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18,
+                        color: AppColor.white,
+                        overflow: TextOverflow.ellipsis,
+                      );
+                    })
                   ],
                 ),
               ),
@@ -122,13 +132,16 @@ class IndexBalance extends StatelessWidget {
                       ],
                     ),
                     VertGap.xs,
-                    BoldText(
-                      text: "Rp${formatCurrency(24001231230)}",
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18,
-                      color: AppColor.white,
-                      overflow: TextOverflow.ellipsis,
-                    )
+                    Obx(() {
+                      final expense = controller.expense.value;
+                      return BoldText(
+                        text: "Rp${formatCurrency(expense)}",
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18,
+                        color: AppColor.white,
+                        overflow: TextOverflow.ellipsis,
+                      );
+                    })
                   ],
                 ),
               ),

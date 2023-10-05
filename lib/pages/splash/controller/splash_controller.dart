@@ -2,7 +2,7 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/route_manager.dart';
 
 import '../../../constants/app_routes.dart';
-import '../../../services/xml_service.dart';
+import '../../../services/xml/xml_service.dart';
 
 class SplashController extends GetxController {
   void check() async {
