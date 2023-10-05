@@ -539,7 +539,7 @@ class IncomeTransactions extends StatelessWidget {
                   ),
                   BoldText(
                     text:
-                        "${transaction.status == 'pemasukan' ? '+' : '-'} Rp${formatCurrency(transaction.amount)}",
+                        "${transaction.status == 'pemasukan' ? '+' : '-'} Rp${formatCurrency(transaction.amount!)}",
                     fontWeight: FontWeight.bold,
                     color: transaction.status == 'pemasukan'
                         ? AppColor.green
@@ -624,7 +624,7 @@ class ExpenseTransactions extends StatelessWidget {
                   ),
                   BoldText(
                     text:
-                        "${transaction.status == 'pemasukan' ? '+' : '-'} Rp${formatCurrency(transaction.amount)}",
+                        "${transaction.status == 'pemasukan' ? '+' : '-'} Rp${formatCurrency(transaction.amount!)}",
                     fontWeight: FontWeight.bold,
                     color: transaction.status == 'pemasukan'
                         ? AppColor.green

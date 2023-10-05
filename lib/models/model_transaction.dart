@@ -4,7 +4,7 @@ class Transaction {
   String? image;
   String? name;
   String? status;
-  dynamic amount;
+  int? amount;
   String? date;
 
   Transaction({

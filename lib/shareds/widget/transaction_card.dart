@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 
-import '../../../constants/app_colors.dart';
-import '../../../constants/app_routes.dart';
-import '../../../constants/custom_gap.dart';
-import '../../../constants/custom_size.dart';
-import '../../../models/model_transaction.dart';
-import '../../../shareds/widget/bold_text.dart';
-import '../../../utils/format_currency.dart';
+import '../../constants/app_colors.dart';
+import '../../constants/app_routes.dart';
+import '../../constants/custom_gap.dart';
+import '../../constants/custom_size.dart';
+import '../../models/model_transaction.dart';
+import 'bold_text.dart';
+import '../../utils/format_currency.dart';
 
-class IndexTransactionsCard extends StatelessWidget {
-  const IndexTransactionsCard({super.key, required this.transaction});
+class TransactionCard extends StatelessWidget {
+  const TransactionCard({super.key, required this.transaction});
 
   final Transaction transaction;
 
@@ -69,7 +69,7 @@ class IndexTransactionsCard extends StatelessWidget {
           ),
           BoldText(
             text:
-                "${transaction.status == 'pemasukan' ? '+' : '-'} Rp${formatCurrency(transaction.amount)}",
+                "${transaction.status == 'pemasukan' ? '+' : '-'} Rp${formatCurrency(transaction.amount!)}",
             fontWeight: FontWeight.bold,
             color: transaction.status == 'pemasukan'
                 ? AppColor.green
