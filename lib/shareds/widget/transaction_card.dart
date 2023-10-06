@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
+import 'package:intl/intl.dart';
 
 import '../../constants/app_colors.dart';
 import '../../constants/app_routes.dart';
@@ -24,6 +27,7 @@ class TransactionCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Expanded(
+            flex: 2,
             child: Row(
               children: [
                 Container(
@@ -36,8 +40,8 @@ class TransactionCard extends StatelessWidget {
                     ),
                     color: AppColor.primary10,
                   ),
-                  child: Image.network(
-                    transaction.image!,
+                  child: Image.file(
+                    File(transaction.image!),
                     fit: BoxFit.contain,
                   ),
                 ),
@@ -55,7 +59,7 @@ class TransactionCard extends StatelessWidget {
                       ),
                       VertGap.s,
                       Text(
-                        "Hari ini",
+                        getDateStatus(),
                         style: textTheme.titleSmall?.copyWith(
                           color: AppColor.grey,
                         ),
@@ -67,18 +71,39 @@ class TransactionCard extends StatelessWidget {
               ],
             ),
           ),
-          BoldText(
-            text:
-                "${transaction.status == 'pemasukan' ? '+' : '-'} Rp${formatCurrency(transaction.amount!)}",
-            fontWeight: FontWeight.bold,
-            color: transaction.status == 'pemasukan'
-                ? AppColor.green
-                : AppColor.red,
-            fontSize: 16,
-            overflow: TextOverflow.ellipsis,
+          Expanded(
+            child: BoldText(
+              text:
+                  "${transaction.status == 'pemasukan' ? '+' : '-'} Rp${formatCurrency(transaction.amount!)}",
+              fontWeight: FontWeight.bold,
+              color: transaction.status == 'pemasukan'
+                  ? AppColor.green
+                  : AppColor.red,
+              fontSize: 16,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.end,
+            ),
           )
         ],
       ),
     );
+  }
+
+  String getDateStatus() {
+    final date = DateTime.parse(transaction.date!);
+    final now = DateTime.now();
+    final yesterday = now.subtract(const Duration(days: 1));
+
+    if (date.year == now.year &&
+        date.month == now.month &&
+        date.day == now.day) {
+      return 'Hari ini, ${date.hour}:${date.minute}';
+    } else if (date.year == yesterday.year &&
+        date.month == yesterday.month &&
+        date.day == yesterday.day) {
+      return 'Kemarin, ${date.hour}:${date.minute}';
+    } else {
+      return '${DateFormat('d MMM y', "id_ID").format(date)} ${date.hour}:${date.minute}';
+    }
   }
 }

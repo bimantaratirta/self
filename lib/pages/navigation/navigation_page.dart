@@ -17,16 +17,6 @@ class _NavigationPageState extends State<NavigationPage> {
   final _controller = Get.put<NavigationController>(NavigationController());
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Obx(() {
       final idx = _controller.idx.value;

@@ -42,28 +42,25 @@ class IndexTransactions extends StatelessWidget {
           ),
           VertGap.reg,
           Expanded(
-            child: Align(
-              alignment: Alignment.center,
-              child: SingleChildScrollView(
-                child: Obx(() {
-                  final recentTransactions = controller.recentTransactions;
-                  if (recentTransactions.isEmpty) {
-                    return Text(
-                      'Tekan tombol "+" di bawah untuk membuat transaksi baru!',
-                      style: textTheme.titleMedium,
-                      textAlign: TextAlign.center,
-                    );
-                  }
-                  return Column(
-                    children: [
-                      for (Transaction transaction in recentTransactions) ...[
-                        TransactionCard(transaction: transaction),
-                        VertGap.sr,
-                      ]
-                    ],
+            child: SingleChildScrollView(
+              child: Obx(() {
+                final recentTransactions = controller.recentTransactions;
+                if (recentTransactions.isEmpty) {
+                  return Text(
+                    'Tekan tombol "+" di bawah untuk membuat transaksi baru!',
+                    style: textTheme.titleMedium,
+                    textAlign: TextAlign.center,
                   );
-                }),
-              ),
+                }
+                return Column(
+                  children: [
+                    for (Transaction transaction in recentTransactions) ...[
+                      TransactionCard(transaction: transaction),
+                      VertGap.sr,
+                    ]
+                  ],
+                );
+              }),
             ),
           ),
         ],

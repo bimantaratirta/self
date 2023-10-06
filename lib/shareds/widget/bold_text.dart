@@ -11,6 +11,7 @@ class BoldText extends StatelessWidget {
     this.overflow,
     this.height,
     this.softWrap,
+    this.textAlign,
   });
 
   final String text;
@@ -20,6 +21,7 @@ class BoldText extends StatelessWidget {
   final TextOverflow? overflow;
   final double? height;
   final bool? softWrap;
+  final TextAlign? textAlign;
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +35,7 @@ class BoldText extends StatelessWidget {
         overflow: overflow,
         height: height,
       ),
+      textAlign: textAlign,
       softWrap: softWrap,
     );
   }

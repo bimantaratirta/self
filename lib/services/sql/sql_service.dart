@@ -12,6 +12,8 @@ class SQLParam<T> {
   final List<String>? columns;
   final String? where;
   final List<Object>? whereArgs;
+  final int? limit;
+  final String? orderBy;
   final T Function(List<Map<String, Object?>>) fromJson;
 
   SQLParam({
@@ -19,6 +21,8 @@ class SQLParam<T> {
     this.value,
     this.columns,
     this.where,
+    this.limit,
+    this.orderBy,
     this.whereArgs,
     required this.fromJson,
   });
@@ -45,7 +49,7 @@ class SQLService {
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           image TEXT,
           name TEXT,
-          balance REAL
+          balance INTEGER
           )
           """,
         );
@@ -57,7 +61,7 @@ class SQLService {
           image TEXT,
           name TEXT,
           status TEXT,
-          amount REAL,
+          amount INTEGER,
           date TEXT,
           time TEXT,
           FOREIGN KEY (user_id) REFERENCES ${SQLTable.user}(id)
@@ -73,9 +77,11 @@ class SQLService {
     try {
       final id = await db.insert(param.table, param.value!);
       final result = SQLResponse<int>(id as int?, null);
+      db.close();
       return result;
     } on DatabaseException catch (error) {
       final result = SQLResponse<int>(null, error);
+      db.close();
       return result;
     }
   }
@@ -88,12 +94,16 @@ class SQLService {
         columns: param.columns,
         where: param.where,
         whereArgs: param.whereArgs,
+        limit: param.limit,
+        orderBy: param.orderBy,
       );
       final decoded = param.fromJson(dbQuery);
       final result = SQLResponse<T>(decoded, null);
+      db.close();
       return result;
     } on DatabaseException catch (error) {
       final result = SQLResponse<T>(null, error);
+      db.close();
       return result;
     }
   }
@@ -108,9 +118,11 @@ class SQLService {
         whereArgs: param.whereArgs,
       );
       final result = SQLResponse<int>(id as int?, null);
+      db.close();
       return result;
     } on DatabaseException catch (error) {
       final result = SQLResponse<int>(null, error);
+      db.close();
       return result;
     }
   }
@@ -124,9 +136,11 @@ class SQLService {
         whereArgs: param.whereArgs,
       );
       final result = SQLResponse<int>(id as int?, null);
+      db.close();
       return result;
     } on DatabaseException catch (error) {
       final result = SQLResponse<int>(null, error);
+      db.close();
       return result;
     }
   }

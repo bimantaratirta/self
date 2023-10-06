@@ -4,9 +4,9 @@ import 'package:get/state_manager.dart';
 
 import '../../../models/model_transaction.dart';
 import '../../../models/model_user.dart';
-import '../../../services/sql/data/transaction/get_all_transactions.dart';
+import '../../../services/sql/data/transaction/get_limit_transactions.dart';
 import '../../../services/sql/data/user/get_user.dart';
-import '../../../services/xml/xml_service.dart';
+import '../../../utils/get_user_id.dart';
 
 class IndexController extends GetxController {
   final Rx<String> username = "".obs;
@@ -23,7 +23,7 @@ class IndexController extends GetxController {
   }
 
   Future<User> loadUserProfile() async {
-    final userId = await XMLService.readPref("user_id");
+    final userId = await getUserId();
     final response = await getUser(int.parse(userId.toString()));
     if (response.data != null) {
       log(response.data!.toJson().toString());
@@ -40,9 +40,9 @@ class IndexController extends GetxController {
   }
 
   Future<List<Transaction>> loadTransactions() async {
-    final response = await getAllTransactions();
+    final response = await getLimitTransaction(5);
     if (response.data != null) {
-      log(response.data.toString());
+      log("asdasd${response.data}");
       return response.data!;
     } else {
       return [];
@@ -61,7 +61,7 @@ class IndexController extends GetxController {
         expense.value += transaction.amount!;
       }
     }
-    recentTransactions.value = transactions.take(5).toList();
+    recentTransactions.value = transactions.toList();
   }
 
   List<Transaction> filterThisMonth(List<Transaction> transactions) {
