@@ -5,12 +5,9 @@ Future<SQLResponse<User>> getUser(int userId) async {
   final response = await sqlService.read<User>(
     SQLParam<User>(
       table: SQLTable.user,
-      fromJson: (listUser) => listUser
-          .map((user) => User.fromJson(user))
-          .toList()
-          .firstWhere((user) => user.id == userId),
-        where: "id = ?",
-        whereArgs: [userId]
+      fromJson: (users) => User.fromJson(users[0]),
+      where: "id = ?",
+      whereArgs: [userId],
     ),
   );
   return response;

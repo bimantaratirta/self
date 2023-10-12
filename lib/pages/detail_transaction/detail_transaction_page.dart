@@ -1,5 +1,7 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:get/instance_manager.dart';
+import 'package:get/get.dart';
 
 import '../../constants/custom_gap.dart';
 import '../../shareds/widget/default_background.dart';
@@ -18,6 +20,7 @@ class _DetailTransactionPageState extends State<DetailTransactionPage> {
   final controller = Get.put<DetailTransactionController>(
     DetailTransactionController(),
   );
+  final transactionId = Get.arguments;
   @override
   void initState() {
     super.initState();
@@ -31,6 +34,7 @@ class _DetailTransactionPageState extends State<DetailTransactionPage> {
 
   @override
   Widget build(BuildContext context) {
+    log(transactionId.toString());
     return const Scaffold(
       body: DefaultBackground(
         padding: EdgeInsets.zero,

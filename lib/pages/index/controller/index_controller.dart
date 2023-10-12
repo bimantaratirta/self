@@ -4,7 +4,7 @@ import 'package:get/state_manager.dart';
 
 import '../../../models/model_transaction.dart';
 import '../../../models/model_user.dart';
-import '../../../services/sql/data/transaction/get_limit_transactions.dart';
+import '../../../services/sql/data/transaction/get_all_transactions.dart';
 import '../../../services/sql/data/user/get_user.dart';
 import '../../../utils/get_user_id.dart';
 
@@ -40,7 +40,10 @@ class IndexController extends GetxController {
   }
 
   Future<List<Transaction>> loadTransactions() async {
-    final response = await getLimitTransaction(5);
+    final now = DateTime.now();
+    final response = await getAllTransactions(
+      where: "AND strftime('%Y-%m', date) = '${now.year}-${now.month}'",
+    );
     if (response.data != null) {
       log("asdasd${response.data}");
       return response.data!;
@@ -61,7 +64,10 @@ class IndexController extends GetxController {
         expense.value += transaction.amount!;
       }
     }
-    recentTransactions.value = transactions.toList();
+    recentTransactions.value = transactions.reversed.take(5).toList();
+    for (var element in recentTransactions) {
+      log(element.date!);
+    }
   }
 
   List<Transaction> filterThisMonth(List<Transaction> transactions) {

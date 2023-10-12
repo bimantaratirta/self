@@ -26,7 +26,7 @@ class IndexTransactions extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Transaksi Terakhir",
+                "Transaksi Bulan Ini",
                 style: textTheme.titleSmall?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
