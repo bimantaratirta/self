@@ -23,6 +23,7 @@ class _DetailTransactionPageState extends State<DetailTransactionPage> {
   final transactionId = Get.arguments;
   @override
   void initState() {
+    controller.loadTransaction(transactionId);
     super.initState();
   }
 

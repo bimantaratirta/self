@@ -1,11 +1,18 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:get/instance_manager.dart';
+import 'package:get/state_manager.dart';
+import 'package:get/utils.dart';
+import 'package:intl/intl.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../../constants/custom_gap.dart';
 import '../../../constants/custom_size.dart';
 import '../../../shareds/widget/bold_text.dart';
-import '../../../shareds/widget/custom_divider.dart';
+import '../../../shareds/widget/custom_text_field.dart';
 import '../../../utils/format_currency.dart';
+import '../controller/detail_transaction_controller.dart';
 
 class DetailTransactionContent extends StatelessWidget {
   const DetailTransactionContent({super.key});
@@ -14,6 +21,7 @@ class DetailTransactionContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final textTheme = Theme.of(context).textTheme;
+    final controller = Get.find<DetailTransactionController>();
     return Container(
       width: size.width,
       padding: const EdgeInsets.symmetric(horizontal: CSize.m),
@@ -24,78 +32,85 @@ class DetailTransactionContent extends StatelessWidget {
         ),
         color: AppColor.white,
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          VertGap.m,
-          Container(
-            width: 100,
-            height: 100,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: AppColor.primary10,
-            ),
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            child: Image.network(
-              'https://dummyimage.com/100x100',
-              fit: BoxFit.cover,
-            ),
-          ),
-          VertGap.reg,
-          Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: CSize.sr,
-              vertical: CSize.xs,
-            ),
-            decoration: BoxDecoration(
-              color: AppColor.red.withOpacity(.15),
-              borderRadius: const BorderRadius.all(Radius.circular(CSize.m)),
-            ),
-            child: Text(
-              "Pengeluaran",
-              style: textTheme.bodySmall?.copyWith(
-                color: AppColor.red,
-                fontWeight: FontWeight.w600,
+      child: Obx(() {
+        final transaction = controller.transaction.value;
+        final isOnEdit = controller.isOnEdit.value;
+        if (transaction == null) return const SizedBox.shrink();
+        final date = DateTime.parse(transaction.date!);
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            VertGap.m,
+            Container(
+              width: 100,
+              height: 100,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: AppColor.primary10,
+              ),
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              child: Image.file(
+                File(transaction.image!),
+                fit: BoxFit.cover,
               ),
             ),
-          ),
-          VertGap.xs,
-          BoldText(
-            text: "Rp${formatCurrency(50000)}",
-            fontWeight: FontWeight.bold,
-            color: AppColor.black,
-            fontSize: 24,
-            overflow: TextOverflow.ellipsis,
-          ),
-          VertGap.m,
-          const TransactionContentItem(
-            color: AppColor.red,
-            title: 'Tipe',
-            content: 'Pengeluaran',
-          ),
-          const TransactionContentItem(title: 'Untuk', content: 'Beli Seblack'),
-          const TransactionContentItem(title: 'Waktu', content: '16:30'),
-          const TransactionContentItem(
-            title: 'Tanggal',
-            content: '29 Agustus 2023',
-          ),
-          const CDivider(height: CSize.m, thickness: 2),
-          TransactionContentItem(
-            title: 'Pengeluaran',
-            content: 'Rp${formatCurrency(20000)}',
-          ),
-          TransactionContentItem(
-            title: 'Biaya lainnya',
-            content: 'Rp${formatCurrency(1500)}',
-          ),
-          const CDivider(height: CSize.m, thickness: 2),
-          TransactionContentItem(
-            title: 'Total',
-            content: 'Rp${formatCurrency(21500)}',
-            fontWeight: FontWeight.bold,
-          ),
-        ],
-      ),
+            VertGap.reg,
+            Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: CSize.sr,
+                vertical: CSize.xs,
+              ),
+              decoration: BoxDecoration(
+                color: transaction.status == "pengeluaran"
+                    ? AppColor.red.withOpacity(.15)
+                    : AppColor.primary10,
+                borderRadius: const BorderRadius.all(Radius.circular(CSize.m)),
+              ),
+              child: Text(
+                transaction.status!.capitalizeFirst!,
+                style: textTheme.bodySmall?.copyWith(
+                  color: transaction.status == "pengeluaran"
+                      ? AppColor.red
+                      : AppColor.primaryLight,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            VertGap.xs,
+            BoldText(
+              text: "Rp${formatCurrency(transaction.amount!)}",
+              fontWeight: FontWeight.bold,
+              color: AppColor.black,
+              fontSize: 24,
+              overflow: TextOverflow.ellipsis,
+            ),
+            VertGap.m,
+            TransactionContentItem(
+              isOnEdit: isOnEdit,
+              color: transaction.status == "pengeluaran"
+                  ? AppColor.red
+                  : AppColor.primaryLight,
+              title: 'Tipe',
+              content: transaction.status!.capitalizeFirst!,
+            ),
+            TransactionContentItem(
+              isOnEdit: isOnEdit,
+              title: transaction.status == "pengeluaran" ? 'Untuk' : 'Dari',
+              content: transaction.name!,
+            ),
+            TransactionContentItem(
+              isOnEdit: isOnEdit,
+              title: 'Waktu',
+              content: '${date.hour}:${date.minute}',
+            ),
+            TransactionContentItem(
+              isOnEdit: isOnEdit,
+              title: 'Tanggal',
+              content: DateFormat('d MMMM y', "id_ID").format(date),
+            ),
+          ],
+        );
+      }),
     );
   }
 }
@@ -107,31 +122,48 @@ class TransactionContentItem extends StatelessWidget {
     required this.title,
     required this.content,
     this.fontWeight,
+    required this.isOnEdit,
   });
 
   final String title;
   final String content;
   final FontWeight? fontWeight;
   final Color? color;
+  final bool isOnEdit;
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
+    final textTheme = Theme.of(context).textTheme; 
+    final controller = Get.find<DetailTransactionController>();
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: CSize.s),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            title,
-            style: textTheme.bodyMedium?.copyWith(color: AppColor.grey),
+          Expanded(
+            child: Text(
+              title,
+              style: textTheme.bodyMedium?.copyWith(color: AppColor.grey),
+            ),
           ),
-          Text(
-            content,
-            style: textTheme.bodyMedium?.copyWith(
-                color: color ?? AppColor.black, fontWeight: fontWeight),
-          )
+          if (isOnEdit && title == "Dari")
+            Expanded(
+              flex: 3,
+              child: CTextField(
+                onChanged: (name) => controller.transaction.value!.name = name,
+                controller: TextEditingController(),
+                focusNode: FocusNode(),
+                enabled: true,
+                hintText: content,
+              ),
+            )
+          else
+            Text(
+              content,
+              style: textTheme.bodyMedium?.copyWith(
+                  color: color ?? AppColor.black, fontWeight: fontWeight),
+            )
         ],
       ),
     );

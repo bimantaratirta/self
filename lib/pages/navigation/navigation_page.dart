@@ -28,7 +28,7 @@ class _NavigationPageState extends State<NavigationPage> {
           idx: idx,
         ),
         floatingActionButton: idx == 0 ? const NavigationFAB() : null,
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       );
     });
   }

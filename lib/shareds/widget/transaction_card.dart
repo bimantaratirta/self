@@ -42,7 +42,7 @@ class TransactionCard extends StatelessWidget {
                   ),
                   child: Image.file(
                     File(transaction.image!),
-                    fit: BoxFit.contain,
+                    fit: BoxFit.cover,
                   ),
                 ),
                 HorzGap.sr,
